@@ -469,6 +469,29 @@ class ApiTest extends TestCase
     /**
      * @test
      */
+    public function api_can_get_image_urls_from_detection_events()
+    {
+        $imageFile = factory(ImageFile::class)->create([
+            'path' => 'events/g5Aqi4GzEXP7PYhh3Iy74vrGP3lhsnDum8UOGWS4.jpeg'
+        ]);
+
+        $event = factory(DetectionEvent::class)->create([
+            'image_file_id' => $imageFile->id
+        ]);
+
+        $response = $this->get('/api/events');
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'image_url' => 'http://unit.test:9999/storage/events/g5Aqi4GzEXP7PYhh3Iy74vrGP3lhsnDum8UOGWS4.jpeg',
+                'thumbnail_url' => 'http://unit.test:9999/storage/events/g5Aqi4GzEXP7PYhh3Iy74vrGP3lhsnDum8UOGWS4-thumb.jpeg',
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function api_can_get_a_detection_event_with_no_matches()
     {
         $event = factory(DetectionEvent::class)->create();

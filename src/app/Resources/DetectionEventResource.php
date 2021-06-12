@@ -27,6 +27,10 @@ class DetectionEventResource extends JsonResource
             'thumbnail_path' => $this->whenLoaded('imageFile') ?
                 $this->imageFile->getStoragePath(true) : null,
             'occurred_at' => $this->occurred_at,
+            'image_url' => $this->whenLoaded('imageFile') ?
+                $this->imageUrl : null,
+            'thumbnail_url' => $this->whenLoaded('imageFile') ?
+                $this->thumbUrl : null,
             'ai_predictions' => AiPredictionResource::collection($this->whenLoaded('aiPredictions')),
             'detection_profiles_count' => $this->detection_profiles_count,
             'pattern_matched_profiles' => DetectionProfileResource::collection($this->whenLoaded('patternMatchedProfiles')),
